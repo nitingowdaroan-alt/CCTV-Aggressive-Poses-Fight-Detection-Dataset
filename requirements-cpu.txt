@@ -1,0 +1,25 @@
+# CPU-only requirements for deployment
+# Install with: pip install -r requirements-cpu.txt
+
+# Core (CPU only)
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.23.0
+
+# Computer Vision
+opencv-python-headless>=4.7.0  # Headless for server deployment
+mediapipe>=0.10.0
+Pillow>=9.4.0
+
+# Data processing
+pandas>=1.5.0
+PyYAML>=6.0
+scikit-learn>=1.2.0
+
+# ONNX Runtime (CPU)
+onnxruntime>=1.15.0
+
+# API server
+fastapi>=0.100.0
+uvicorn>=0.22.0
+python-multipart>=0.0.6

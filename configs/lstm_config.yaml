@@ -1,0 +1,43 @@
+# LSTM Model Configuration
+# Used by: train_lstm.py
+
+model:
+  type: bilstm  # Options: lstm, bilstm, conv_lstm
+  input_size: 66  # 33 joints * 2 (x, y)
+  hidden_size: 128
+  num_layers: 2
+  num_classes: 2
+  dropout: 0.3
+  use_attention: true  # For bilstm only
+
+data:
+  sequence_length: 16
+  stride: 8
+  normalize: true
+  add_velocity: false
+
+training:
+  epochs: 60
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  scheduler: cosine  # Options: cosine, plateau, none
+  early_stopping_patience: 15
+  use_class_weights: false
+  gradient_clip: 1.0
+
+augmentation:
+  enabled: true
+  noise_scale: 0.01
+  scale_range: [0.9, 1.1]
+  temporal_jitter: true
+
+logging:
+  save_every: 10  # Save checkpoint every N epochs
+  log_interval: 10  # Log every N batches
+  use_wandb: false
+  wandb_project: fight-detection
+
+class_names:
+  - normal
+  - aggressive

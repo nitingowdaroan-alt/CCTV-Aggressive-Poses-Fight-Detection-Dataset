@@ -1,0 +1,42 @@
+# ST-GCN Model Configuration
+# Used by: train_stgcn.py
+
+model:
+  type: lightweight  # Options: stgcn, lightweight
+  num_joints: 33  # MediaPipe pose landmarks
+  in_channels: 3  # (x, y, visibility)
+  num_classes: 2
+  dropout: 0.0
+
+data:
+  sequence_length: 16
+  stride: 8
+  normalize: true
+
+training:
+  epochs: 80
+  batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  scheduler: step  # Options: cosine, plateau, step, none
+  step_size: 20
+  gamma: 0.5
+  early_stopping_patience: 20
+  use_class_weights: false
+  gradient_clip: 1.0
+
+augmentation:
+  enabled: true
+  horizontal_flip: true
+  noise_scale: 0.01
+  scale_range: [0.9, 1.1]
+
+logging:
+  save_every: 10
+  log_interval: 10
+  use_wandb: false
+  wandb_project: fight-detection
+
+class_names:
+  - normal
+  - aggressive

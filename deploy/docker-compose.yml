@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # GPU Inference Service
+  fight-detection-gpu:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      target: gpu
+    image: fight-detection:gpu
+    container_name: fight-detection-gpu
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ../models:/app/models:ro
+      - ../outputs:/app/outputs
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    devices:
+      - /dev/video0:/dev/video0  # Webcam access
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    command: ["--source", "0", "--model", "models/lstm_best.pt", "--type", "lstm", "--device", "cuda"]
+
+  # CPU Inference Service
+  fight-detection-cpu:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      target: cpu
+    image: fight-detection:cpu
+    container_name: fight-detection-cpu
+    volumes:
+      - ../models:/app/models:ro
+      - ../outputs:/app/outputs
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    devices:
+      - /dev/video0:/dev/video0
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    command: ["--source", "0", "--model", "models/lstm_best.pt", "--type", "lstm", "--device", "cpu"]
+
+  # API Server
+  fight-detection-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      target: cpu
+    image: fight-detection:api
+    container_name: fight-detection-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../models:/app/models:ro
+    entrypoint: ["python", "deploy/api_server.py"]
+    command: ["--host", "0.0.0.0", "--port", "8000"]

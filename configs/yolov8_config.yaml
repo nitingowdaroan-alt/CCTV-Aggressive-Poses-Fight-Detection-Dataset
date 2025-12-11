@@ -1,0 +1,50 @@
+# YOLOv8 Training Configuration
+# Used by: train_yolov8.py
+
+# Model
+model: yolov8n.pt  # Options: yolov8n.pt, yolov8s.pt, yolov8m.pt, yolov8l.pt, yolov8x.pt
+
+# Data
+data: yolo_split/data.yaml
+imgsz: 640
+
+# Training
+epochs: 50
+batch: 16
+patience: 50  # Early stopping patience
+
+# Optimizer
+optimizer: AdamW  # Options: SGD, Adam, AdamW, RMSProp
+lr0: 0.01  # Initial learning rate
+lrf: 0.01  # Final learning rate (fraction of lr0)
+weight_decay: 0.0005
+warmup_epochs: 3
+warmup_bias_lr: 0.1
+
+# Augmentation (Ultralytics defaults)
+hsv_h: 0.015  # HSV-Hue augmentation
+hsv_s: 0.7    # HSV-Saturation augmentation
+hsv_v: 0.4    # HSV-Value augmentation
+degrees: 0.0  # Rotation (+/- degrees)
+translate: 0.1  # Translation (+/- fraction)
+scale: 0.5    # Scale (+/- gain)
+shear: 0.0    # Shear (+/- degrees)
+perspective: 0.0  # Perspective (+/- fraction)
+flipud: 0.0   # Flip up-down probability
+fliplr: 0.5   # Flip left-right probability
+mosaic: 1.0   # Mosaic augmentation
+mixup: 0.0    # Mixup augmentation
+
+# Other settings
+device: 0  # CUDA device, or cpu
+workers: 8  # Number of dataloader workers
+project: outputs/yolov8
+name: train
+exist_ok: true
+plots: true
+save: true
+save_period: 10  # Save checkpoint every N epochs
+
+# Logging
+# wandb: false
+# tensorboard: true
